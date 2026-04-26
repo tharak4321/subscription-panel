@@ -105,3 +105,30 @@ const btnStyle = {
   cursor: "pointer",
   fontWeight: "bold"
 };
+const bg = {
+  minHeight: "100vh",
+  backgroundImage: "url('https://i.ibb.co/B51tRxHZ/image-49.jpg')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+};
+
+const overlay = {
+  width: "100%",
+  height: "100%",
+  background: "rgba(0,0,0,0.65)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+const card = {
+  background: "rgba(255,255,255,0.08)",
+  backdropFilter: "blur(10px)",
+  padding: "30px",
+  borderRadius: "15px",
+  width: "90%",
+  maxWidth: "350px",
+  color: "#fff",
+  textAlign: "center",
+  boxShadow: "0 10px 40px rgba(0,0,0,0.5)"
+};
