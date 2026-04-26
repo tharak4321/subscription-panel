@@ -22,9 +22,16 @@ export default function Home() {
         <div style={card}>
 
           <h2 style={{ marginBottom: 10 }}>🔥 Premium Access</h2>
-          <p style={{ fontSize: 13, color: "#ccc", marginBottom: 20 }}>
+
+          <p style={{ fontSize: 13, color: "#ccc", marginBottom: 10 }}>
             Get instant access after payment
           </p>
+
+          {/* 🔥 Subscription Info */}
+          <div style={infoBox}>
+            ⏳ <b>2 Months Access</b><br/>
+            🔄 Renewal required after expiry
+          </div>
 
           <form onSubmit={submit}>
 
@@ -72,7 +79,7 @@ export default function Home() {
   );
 }
 
-/* 🔥 Background Image */
+/* 🔥 Background */
 const bg = {
   minHeight: "100vh",
   width: "100%",
@@ -81,7 +88,7 @@ const bg = {
   backgroundPosition: "center",
 };
 
-/* 🔥 Dark Overlay */
+/* 🔥 Overlay */
 const overlay = {
   width: "100%",
   height: "100vh",
@@ -91,7 +98,7 @@ const overlay = {
   alignItems: "center",
 };
 
-/* 💎 Glass Card */
+/* 💎 Card */
 const card = {
   background: "rgba(255,255,255,0.08)",
   backdropFilter: "blur(12px)",
@@ -102,6 +109,16 @@ const card = {
   color: "#fff",
   textAlign: "center",
   boxShadow: "0 10px 40px rgba(0,0,0,0.5)"
+};
+
+/* 📦 Info Box */
+const infoBox = {
+  background: "rgba(255,255,255,0.1)",
+  padding: "10px",
+  borderRadius: "8px",
+  marginBottom: "20px",
+  fontSize: "13px",
+  color: "#ddd"
 };
 
 /* ✏️ Inputs */
