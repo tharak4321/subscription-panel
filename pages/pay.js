@@ -7,54 +7,56 @@ export default function Pay() {
 
   useEffect(() => {
     const data = localStorage.getItem("user");
-    if (data) {
-      setUser(JSON.parse(data));
-    }
+    if (data) setUser(JSON.parse(data));
   }, []);
 
   return (
-    <div style={{ textAlign: "center", padding: 20 }}>
-      <h2>Complete Payment</h2>
+    <div style={bg}>
+      <div style={card}>
+        <h2>💳 Complete Payment</h2>
 
-      {user && (
-        <>
-          <p><b>Name:</b> {user.name}</p>
-          <p><b>Plan:</b> {user.plan}</p>
-        </>
-      )}
+        {user && (
+          <>
+            <p><b>{user.name}</b></p>
+            <p>{user.plan}</p>
+          </>
+        )}
 
-      <h3>Scan QR & Pay</h3>
+        <img
+          src="https://i.ibb.co/hhMLNYk/IMG-20251114-100022-427.jpg"
+          width="220"
+          style={{borderRadius:10, margin:10}}
+        />
 
-      {/* 🔥 YOUR QR CODE */}
-      <img
-        src="https://i.ibb.co/hhMLNYk/IMG-20251114-100022-427.jpg"
-        width="250"
-        style={{ borderRadius: "10px" }}
-      />
+        <p style={{fontSize:13}}>
+          Scan using GPay / PhonePe
+        </p>
 
-      <p style={{ marginTop: 10 }}>
-        Pay using Google Pay / PhonePe
-      </p>
+        <p style={{color:"red", fontSize:12}}>
+          ⚠️ Pay exact amount
+        </p>
 
-      <p style={{ color: "red", fontSize: 13 }}>
-        ⚠️ Pay exact amount or request will be rejected
-      </p>
-
-      <br />
-
-      <button
-        onClick={() => router.push("/upload")}
-        style={{
-          padding: "10px 20px",
-          background: "#000",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer"
-        }}
-      >
-        I HAVE PAID
-      </button>
+        <button style={btn} onClick={()=>router.push("/upload")}>
+          I HAVE PAID →
+        </button>
+      </div>
     </div>
   );
 }
+
+const bg = {
+  minHeight:"100vh", display:"flex", justifyContent:"center", alignItems:"center",
+  background:"linear-gradient(135deg,#1d2671,#c33764)"
+};
+
+const card = {
+  background:"#fff", padding:30, borderRadius:15,
+  textAlign:"center", width:"90%", maxWidth:350,
+  boxShadow:"0 10px 30px rgba(0,0,0,0.3)"
+};
+
+const btn = {
+  marginTop:15, padding:12, width:"100%",
+  background:"#000", color:"#fff",
+  border:"none", borderRadius:8, cursor:"pointer"
+};
