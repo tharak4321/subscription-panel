@@ -14,7 +14,7 @@ export default function Upload() {
   const submit = async () => {
     if (!file) return alert("Please upload screenshot first");
 
-    // 📅 Calculate subscription dates
+    // 📅 Calculate dates
     const startDate = new Date();
     const nextPayment = new Date();
     nextPayment.setMonth(startDate.getMonth() + 2);
@@ -23,7 +23,7 @@ export default function Upload() {
     const nextStr = nextPayment.toLocaleDateString();
 
     const formData = new FormData();
-    formData.append("chat_id", "7657045982"); // your chat ID
+    formData.append("chat_id", "7657045982");
     formData.append("photo", file);
 
     formData.append(
@@ -56,15 +56,12 @@ export default function Upload() {
       const data = await res.json();
 
       if (data.ok) {
-        // ✅ Show confirmation to user
         setMessage(
 `✅ Payment Submitted!
 
 ⏳ Subscription: 2 Months
 📅 Starts Today
-📆 Next Payment: ${nextStr}
-
-You will receive your ID shortly.`
+📆 Next Payment: ${nextStr}`
         );
       } else {
         alert("❌ Failed to send. Check bot token.");
@@ -100,11 +97,41 @@ You will receive your ID shortly.`
             {loading ? "Sending..." : "Submit"}
           </button>
 
-          {/* ✅ Show confirmation message */}
+          {/* ✅ Confirmation + Telegram Contact */}
           {message && (
-            <p style={{ marginTop: 20, color: "#0f0", whiteSpace: "pre-line" }}>
-              {message}
-            </p>
+            <div style={{ marginTop: 20, color: "#0f0" }}>
+
+              <p style={{ whiteSpace: "pre-line" }}>
+                {message}
+              </p>
+
+              <p style={{ marginTop: 10, color: "#fff" }}>
+                📩 To get access:
+              </p>
+
+              <p style={{ fontSize: 13 }}>
+                👉 Send <b>"HI"</b> on Telegram<br/>
+                OR send your <b>Telegram ID</b>
+              </p>
+
+              <a
+                href="https://t.me/dragonbreath1?text=Hi%20I%20have%20completed%20payment"
+                target="_blank"
+                style={{
+                  display: "inline-block",
+                  marginTop: 10,
+                  padding: "12px 20px",
+                  background: "#0088cc",
+                  color: "#fff",
+                  borderRadius: "8px",
+                  textDecoration: "none",
+                  fontWeight: "bold"
+                }}
+              >
+                Open Telegram →
+              </a>
+
+            </div>
           )}
 
           <p style={{ marginTop: 15, fontSize: 12, color: "red" }}>
