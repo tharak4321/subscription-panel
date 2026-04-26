@@ -8,14 +8,25 @@ export default function Pay() {
     <div style={{ textAlign: "center", padding: 20 }}>
       <h2>Complete Payment</h2>
 
-      <p>Name: {user?.name}</p>
-      <p>Plan: {user?.plan}</p>
+      <p><b>Name:</b> {user?.name}</p>
+      <p><b>Plan:</b> {user?.plan}</p>
 
-      <img src="/qr.png" width="250" />
+      <h3>Scan & Pay</h3>
 
-      <p>Scan using Google Pay / PhonePe</p>
+      <img
+        src="https://i.ibb.co/hhMLNYk/IMG-20251114-100022-427.jpg"
+        alt="QR Code"
+        width="250"
+        style={{ borderRadius: "10px" }}
+      />
 
-      <button onClick={()=>router.push("/upload")}>
+      <p style={{ marginTop: 10 }}>
+        Use Google Pay / PhonePe to scan and complete payment
+      </p>
+
+      <br />
+
+      <button onClick={() => router.push("/upload")}>
         I HAVE PAID
       </button>
     </div>
