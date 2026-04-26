@@ -1,92 +1,49 @@
-import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-export default function Upload() {
-  const [file, setFile] = useState(null);
+export default function Pay() {
+  const router = useRouter();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
 
-  // ✅ Load user from localStorage (client-side only)
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const data = localStorage.getItem("user");
-      if (data) {
-        setUser(JSON.parse(data));
-      }
+    const data = localStorage.getItem("user");
+    if (data) {
+      setUser(JSON.parse(data));
     }
   }, []);
 
-  const submit = async () => {
-    if (!file) {
-      alert("Please upload screenshot first");
-      return;
-    }
-
-    if (!user) {
-      alert("User data missing. Go back and fill form again.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("chat_id", "7657045982"); // your chat ID
-    formData.append("photo", file);
-    formData.append(
-      "caption",
-      `📥 New Payment
-
-👤 Name: ${user.name}
-🎂 Age: ${user.age}
-💰 Plan: ${user.plan}
-⏰ Time: ${new Date().toLocaleString()}
-
-⚠️ Verify payment before approval`
-    );
-
-    setLoading(true);
-
-    try {
-      const res = await fetch(
-        "https://api.telegram.org/bot8653348546:AAFb900FrkqzHwVk3R-wy7EN_6CXlO8pC9U/sendPhoto",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await res.json();
-
-      if (data.ok) {
-        alert("✅ Submitted successfully! Check Telegram.");
-      } else {
-        console.error(data);
-        alert("❌ Failed to send. Check bot token.");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("❌ Error sending data.");
-    }
-
-    setLoading(false);
-  };
-
   return (
     <div style={{ textAlign: "center", padding: 20 }}>
-      <h2>Upload Payment Screenshot</h2>
+      <h2>Complete Payment</h2>
 
-      <p style={{ fontSize: 14, color: "gray" }}>
-        After payment, upload your screenshot below
-      </p>
+      {user && (
+        <>
+          <p><b>Name:</b> {user.name}</p>
+          <p><b>Plan:</b> {user.plan}</p>
+        </>
+      )}
 
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setFile(e.target.files[0])}
+      <h3>Scan QR & Pay</h3>
+
+      {/* 🔥 YOUR QR CODE */}
+      <img
+        src="https://i.ibb.co/hhMLNYk/IMG-20251114-100022-427.jpg"
+        width="250"
+        style={{ borderRadius: "10px" }}
       />
 
-      <br /><br />
+      <p style={{ marginTop: 10 }}>
+        Pay using Google Pay / PhonePe
+      </p>
+
+      <p style={{ color: "red", fontSize: 13 }}>
+        ⚠️ Pay exact amount or request will be rejected
+      </p>
+
+      <br />
 
       <button
-        onClick={submit}
-        disabled={loading}
+        onClick={() => router.push("/upload")}
         style={{
           padding: "10px 20px",
           background: "#000",
@@ -96,12 +53,8 @@ export default function Upload() {
           cursor: "pointer"
         }}
       >
-        {loading ? "Sending..." : "Submit"}
+        I HAVE PAID
       </button>
-
-      <p style={{ marginTop: 20, fontSize: 12, color: "red" }}>
-        ⚠️ Fake screenshots will be rejected
-      </p>
     </div>
   );
 }
