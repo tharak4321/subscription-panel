@@ -13,9 +13,11 @@ export default function Home() {
   const submit = (e) => {
     e.preventDefault();
 
+    // Save user data
     localStorage.setItem("user", JSON.stringify(form));
 
-    router.push("/pay"); // 🔥 THIS IS IMPORTANT
+    // 🔥 IMPORTANT: correct route
+    router.push("/pay");
   };
 
   return (
