@@ -15,8 +15,10 @@ export default function handler(req, res) {
   ];
 
   const user = users.find(
-    (u) => u.id === id && u.pass === pass
-  );
+  (u) =>
+    u.id.toLowerCase() === id.toLowerCase() &&
+    u.pass === pass
+);
 
   if (!user) {
     return res.status(401).json({ success: false });
