@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 export default function Upload() {
   const [file, setFile] = useState(null);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [agree, setAgree] = useState(false);
 
   useEffect(() => {
     const data = localStorage.getItem("user");
@@ -12,15 +13,18 @@ export default function Upload() {
   }, []);
 
   const submit = async () => {
-    if (!file) return alert("Please upload screenshot first");
+    if (!file) {
+      alert("Please upload screenshot first");
+      return;
+    }
 
-    // 📅 Calculate dates
-    const startDate = new Date();
-    const nextPayment = new Date();
-    nextPayment.setMonth(startDate.getMonth() + 2);
+    if (!agree) {
+      alert("Please agree to terms before submitting");
+      return;
+    }
 
-    const startStr = startDate.toLocaleDateString();
-    const nextStr = nextPayment.toLocaleDateString();
+    const userId = "U" + Date.now();
+    localStorage.setItem("userId", userId);
 
     const formData = new FormData();
     formData.append("chat_id", "7657045982");
@@ -28,16 +32,15 @@ export default function Upload() {
 
     formData.append(
       "caption",
-`📥 New Subscription
+`📥 New Payment
+
+🆔 ID: ${userId}
 
 👤 Name: ${user?.name}
 🎂 Age: ${user?.age}
 💰 Plan: ${user?.plan}
 
-📅 Start: ${startStr}
-📆 Next Payment: ${nextStr}
-
-⏳ Duration: 2 Months
+⏰ Time: ${new Date().toLocaleString()}
 
 ⚠️ Verify payment before approval`
     );
@@ -59,9 +62,11 @@ export default function Upload() {
         setMessage(
 `✅ Payment Submitted!
 
-⏳ Subscription: 2 Months
-📅 Starts Today
-📆 Next Payment: ${nextStr}`
+🆔 Your ID: ${userId}
+
+📩 Send "Hi + ID" on Telegram
+
+⚠️ No refund will be provided`
         );
       } else {
         alert("❌ Failed to send. Check bot token.");
@@ -81,7 +86,7 @@ export default function Upload() {
           <h2>📤 Upload Payment Screenshot</h2>
 
           <p style={{ fontSize: 13, color: "#ccc" }}>
-            ⏳ Subscription valid for <b>2 months</b>
+            Upload your payment proof to continue
           </p>
 
           <input
@@ -91,51 +96,59 @@ export default function Upload() {
             style={{ marginTop: 10 }}
           />
 
-          <br /><br />
+          {/* ⚠️ FAKE WARNING */}
+          <div style={tips}>
+            ⚠️ Fake screenshots will be rejected  
+            <br />
+            • Do not edit or crop payment proof  
+            • Ensure UPI ID & amount is visible  
+            • Only real payments are accepted  
+          </div>
 
-          <button style={btn} onClick={submit} disabled={loading}>
+          {/* ✅ AGREEMENT */}
+          <div style={{ marginTop: 15, textAlign: "left" }}>
+            <label style={{ fontSize: 13 }}>
+              <input
+                type="checkbox"
+                checked={agree}
+                onChange={() => setAgree(!agree)}
+              />{" "}
+              I agree that payment is final and non-refundable
+            </label>
+          </div>
+
+          <br />
+
+          <button
+            onClick={submit}
+            style={{
+              ...btn,
+              opacity: agree ? 1 : 0.5,
+              cursor: agree ? "pointer" : "not-allowed"
+            }}
+            disabled={!agree || loading}
+          >
             {loading ? "Sending..." : "Submit"}
           </button>
 
-          {/* ✅ Confirmation + Telegram Contact */}
+          {/* SUCCESS */}
           {message && (
             <div style={{ marginTop: 20, color: "#0f0" }}>
-
-              <p style={{ whiteSpace: "pre-line" }}>
-                {message}
-              </p>
-
-              <p style={{ marginTop: 10, color: "#fff" }}>
-                📩 To get access:
-              </p>
-
-              <p style={{ fontSize: 13 }}>
-                👉 Send <b>"HI"</b> on Telegram<br/>
-                OR send your <b>Telegram ID</b>
-              </p>
+              <p style={{ whiteSpace: "pre-line" }}>{message}</p>
 
               <a
-                href="https://t.me/dragonbreath1?text=Hi%20I%20have%20completed%20payment"
+                href={`https://t.me/dragonbreath1?text=Hi%20My%20ID:%20${localStorage.getItem("userId")}`}
                 target="_blank"
-                style={{
-                  display: "inline-block",
-                  marginTop: 10,
-                  padding: "12px 20px",
-                  background: "#0088cc",
-                  color: "#fff",
-                  borderRadius: "8px",
-                  textDecoration: "none",
-                  fontWeight: "bold"
-                }}
+                style={telegramBtn}
               >
                 Open Telegram →
               </a>
-
             </div>
           )}
 
-          <p style={{ marginTop: 15, fontSize: 12, color: "red" }}>
-            ⚠️ Fake screenshots will be rejected
+          {/* NO REFUND */}
+          <p style={warning}>
+            ⚠️ All payments are final. No refund or cancellation allowed.
           </p>
 
         </div>
@@ -144,16 +157,15 @@ export default function Upload() {
   );
 }
 
-/* 🔥 Background */
+/* 🎨 STYLES */
+
 const bg = {
   minHeight: "100vh",
-  width: "100%",
   backgroundImage: "url('https://i.ibb.co/B51tRxHZ/image-49.jpg')",
   backgroundSize: "cover",
   backgroundPosition: "center",
 };
 
-/* 🔥 Overlay */
 const overlay = {
   width: "100%",
   height: "100vh",
@@ -163,28 +175,48 @@ const overlay = {
   alignItems: "center",
 };
 
-/* 💎 Card */
 const card = {
   background: "rgba(255,255,255,0.08)",
   backdropFilter: "blur(12px)",
-  padding: "30px",
-  borderRadius: "15px",
+  padding: 25,
+  borderRadius: 15,
   width: "90%",
-  maxWidth: "350px",
+  maxWidth: 350,
   color: "#fff",
   textAlign: "center",
   boxShadow: "0 10px 40px rgba(0,0,0,0.5)"
 };
 
-/* 🔘 Button */
 const btn = {
   width: "100%",
-  padding: "12px",
+  padding: 12,
   background: "linear-gradient(45deg,#ff416c,#ff4b2b)",
   color: "#fff",
   border: "none",
-  borderRadius: "8px",
-  cursor: "pointer",
-  fontWeight: "bold",
-  boxShadow: "0 0 15px rgba(255,75,43,0.6)"
+  borderRadius: 8,
+  fontWeight: "bold"
+};
+
+const telegramBtn = {
+  display: "inline-block",
+  marginTop: 10,
+  padding: "10px 20px",
+  background: "#0088cc",
+  color: "#fff",
+  borderRadius: 8,
+  textDecoration: "none",
+  fontWeight: "bold"
+};
+
+const warning = {
+  marginTop: 20,
+  fontSize: 12,
+  color: "#ff4b4b"
+};
+
+const tips = {
+  marginTop: 15,
+  fontSize: 12,
+  color: "#ffcc00",
+  textAlign: "left"
 };
