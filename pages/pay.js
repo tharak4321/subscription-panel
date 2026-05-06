@@ -23,7 +23,7 @@ export default function Pay() {
         )}
 
         <img
-          src="https://i.ibb.co/hhMLNYk/IMG-20251114-100022-427.jpg"
+          src="https://i.ibb.co/rG2GscPp/IMG-20260506-212001-658.jpg"
           width="220"
           style={{borderRadius:10, margin:10}}
         />
