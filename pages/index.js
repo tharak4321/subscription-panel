@@ -1,120 +1,241 @@
-{/* 🔥 PLAN SECTION */}
-<div style={{ marginBottom: 25 }}>
+import { useState } from "react";
+import { useRouter } from "next/router";
 
-  <p style={{
-    marginBottom: 12,
-    color: "#ccc",
-    fontSize: 14
-  }}>
-    Premium Membership:
-  </p>
+export default function Home() {
+  const router = useRouter();
 
-  {/* ⚠️ NOTICE */}
-  <div style={{
-    background: "rgba(255,140,0,0.12)",
-    border: "1px solid rgba(255,140,0,0.4)",
-    padding: "12px",
-    borderRadius: "12px",
-    marginBottom: "15px",
-    color: "#ffd27f",
-    fontSize: 12,
-    textAlign: "left"
-  }}>
-    ⚠️ Due to increasing AI generation & rendering costs, 
-    the ₹500 Normal Plan has been removed.
+  const [form, setForm] = useState({
+    name: "",
+    age: "",
+    plan: "Super - ₹1000"
+  });
 
-    <br /><br />
+  const submit = (e) => {
+    e.preventDefault();
 
-    To maintain high-quality content, fast delivery, 
-    and premium AI edits, only the Super Membership is available.
-  </div>
+    localStorage.setItem("user", JSON.stringify(form));
 
-  {/* 🔥 SUPER */}
-  <div
-    onClick={() =>
-      setForm({ ...form, plan: "Super - ₹1000" })
-    }
-    style={{
-      padding: "20px",
-      borderRadius: "18px",
-      cursor: "pointer",
-      transition: "0.3s",
+    router.push("/pay");
+  };
 
-      border: "2px solid gold",
+  return (
+    <div style={bg}>
+      <div style={overlay}>
 
-      background:
-        "linear-gradient(135deg,#ff416c,#ff4b2b)",
+        <div style={card}>
 
-      transform: "scale(1.04)",
+          <h1 style={{
+            fontSize: 42,
+            marginBottom: 10,
+            color: "#fff"
+          }}>
+            🔥 Premium Access
+          </h1>
 
-      boxShadow:
-        "0 0 35px rgba(255,75,43,0.9)",
+          <p style={{
+            color: "#ddd",
+            marginBottom: 20
+          }}>
+            Get instant access after payment
+          </p>
 
-      color: "#fff",
-      position: "relative"
-    }}
-  >
+          {/* DURATION */}
+          <div style={durationBox}>
+            ⏳ <b>2 Months Access</b>
+            <br />
+            🔁 Renewal required after expiry
+          </div>
 
-    {/* ⭐ BADGE */}
-    <div style={{
-      position: "absolute",
-      top: "-10px",
-      right: "10px",
-      background: "gold",
-      color: "#000",
-      padding: "4px 10px",
-      borderRadius: "20px",
-      fontSize: "10px",
-      fontWeight: "bold"
-    }}>
-      PREMIUM ACCESS
+          <form onSubmit={submit}>
+
+            <input
+              placeholder="Enter your name"
+              required
+              style={inputStyle}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  name: e.target.value
+                })
+              }
+            />
+
+            <input
+              placeholder="Enter your age"
+              required
+              style={inputStyle}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  age: e.target.value
+                })
+              }
+            />
+
+            {/* 🔥 PLAN SECTION */}
+            <div style={{ marginBottom: 25 }}>
+
+              <p style={{
+                marginBottom: 12,
+                color: "#ccc",
+                fontSize: 14
+              }}>
+                Premium Membership:
+              </p>
+
+              {/* NOTICE */}
+              <div style={{
+                background: "rgba(255,140,0,0.12)",
+                border: "1px solid rgba(255,140,0,0.4)",
+                padding: "12px",
+                borderRadius: "12px",
+                marginBottom: "15px",
+                color: "#ffd27f",
+                fontSize: 12,
+                textAlign: "left"
+              }}>
+                ⚠️ Due to increasing AI generation & rendering costs,
+                the ₹500 Normal Plan has been removed.
+
+                <br /><br />
+
+                To maintain premium quality and faster delivery,
+                only Super Membership is available.
+              </div>
+
+              {/* SUPER PLAN */}
+              <div
+                onClick={() =>
+                  setForm({
+                    ...form,
+                    plan: "Super - ₹1000"
+                  })
+                }
+                style={{
+                  padding: "20px",
+                  borderRadius: "18px",
+                  border: "2px solid gold",
+                  background:
+                    "linear-gradient(135deg,#ff416c,#ff4b2b)",
+                  boxShadow:
+                    "0 0 35px rgba(255,75,43,0.9)",
+                  color: "#fff",
+                  cursor: "pointer"
+                }}
+              >
+
+                <b style={{ fontSize: 24 }}>
+                  🔥 Super Users – ₹1000
+                </b>
+
+                <ul style={{
+                  textAlign: "left",
+                  marginTop: 15,
+                  lineHeight: 1.8,
+                  fontSize: 14
+                }}>
+                  <li>✔ Premium subscription access</li>
+                  <li>✔ First access to latest AI content</li>
+                  <li>✔ All premium media access</li>
+                  <li>⭐ Personal AI edits</li>
+                  <li>⭐ Story-based custom edits</li>
+                  <li>⭐ Downloadable premium content</li>
+                  <li>⭐ Premium dashboard access</li>
+                </ul>
+
+                <p style={{
+                  marginTop: 12,
+                  fontSize: 12
+                }}>
+                  ⚡ Most users choose this plan
+                </p>
+
+              </div>
+
+            </div>
+
+            <button type="submit" style={btnStyle}>
+              Continue →
+            </button>
+
+          </form>
+
+          <p style={{
+            fontSize: 11,
+            color: "#ccc",
+            marginTop: 15
+          }}>
+            🔒 Secure payment • Instant access
+          </p>
+
+        </div>
+
+      </div>
     </div>
+  );
+}
 
-    <b style={{ fontSize: 18 }}>
-      🔥 Super Users – ₹1000
-    </b>
+/* STYLES */
 
-    <ul style={{
-      fontSize: 13,
-      marginTop: 10,
-      textAlign: "left",
-      lineHeight: 1.8
-    }}>
-      <li>✔ Add to premium subscription channel</li>
-      <li>✔ First access to latest AI content</li>
-      <li>✔ All premium media access</li>
-      <li>⭐ Personal AI edits</li>
-      <li>⭐ Story-based custom edits</li>
-      <li>⭐ Downloadable premium content</li>
-      <li>⭐ Premium dashboard access</li>
-      <li>⭐ Direct Telegram delivery system</li>
-    </ul>
+const bg = {
+  minHeight: "100vh",
+  backgroundImage:
+    "url('https://i.ibb.co/B51tRxHZ/image-49.jpg')",
+  backgroundSize: "cover",
+  backgroundPosition: "center"
+};
 
-    <div style={{
-      marginTop: 10,
-      fontSize: 12,
-      color: "#ffe"
-    }}>
-      💰 Premium value worth ₹2000+
-    </div>
+const overlay = {
+  width: "100%",
+  minHeight: "100vh",
+  background: "rgba(0,0,0,0.75)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: 20
+};
 
-    <p style={{
-      fontSize: 11,
-      marginTop: 6,
-      opacity: 0.9
-    }}>
-      ⚡ Best experience • Most users choose this
-    </p>
+const card = {
+  width: "100%",
+  maxWidth: 420,
+  background: "rgba(255,255,255,0.08)",
+  backdropFilter: "blur(12px)",
+  borderRadius: 20,
+  padding: 25,
+  textAlign: "center",
+  boxShadow: "0 10px 40px rgba(0,0,0,0.5)"
+};
 
-  </div>
+const inputStyle = {
+  width: "100%",
+  padding: "14px",
+  marginBottom: "15px",
+  borderRadius: "10px",
+  border: "1px solid rgba(255,255,255,0.3)",
+  background: "rgba(255,255,255,0.1)",
+  color: "#fff",
+  fontSize: 14,
+  outline: "none"
+};
 
-  {/* 🔥 URGENCY */}
-  <p style={{
-    marginTop: 12,
-    fontSize: 11,
-    color: "#ffd700"
-  }}>
-    🔥 Limited premium slots available
-  </p>
+const btnStyle = {
+  width: "100%",
+  padding: "14px",
+  borderRadius: "12px",
+  border: "none",
+  background:
+    "linear-gradient(45deg,#ff416c,#ff4b2b)",
+  color: "#fff",
+  fontSize: 16,
+  fontWeight: "bold",
+  cursor: "pointer"
+};
 
-</div>
+const durationBox = {
+  background: "rgba(255,255,255,0.08)",
+  padding: 12,
+  borderRadius: 12,
+  marginBottom: 20,
+  color: "#fff",
+  fontSize: 14
+};
