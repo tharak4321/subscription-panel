@@ -1,241 +1,152 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
 
-export default function Home() {
-  const router = useRouter();
+{/* 🔥 PLAN SECTION */}
+<div style={{ marginBottom: 25 }}>
 
-  const [form, setForm] = useState({
-    name: "",
-    age: "",
-    plan: "Super - ₹1000"
-  });
+  <p style={{
+    marginBottom: 12,
+    color: "#ccc",
+    fontSize: 14
+  }}>
+    Choose your plan:
+  </p>
 
-  const submit = (e) => {
-    e.preventDefault();
+  {/* NOTICE */}
+  <div style={{
+    background: "rgba(255,140,0,0.12)",
+    border: "1px solid rgba(255,140,0,0.4)",
+    padding: "12px",
+    borderRadius: "12px",
+    marginBottom: "15px",
+    color: "#ffd27f",
+    fontSize: 12,
+    textAlign: "left"
+  }}>
+    ⚠️ AI generation & rendering costs have increased.
 
-    localStorage.setItem("user", JSON.stringify(form));
+    <br /><br />
 
-    router.push("/pay");
-  };
+    To maintain quality and faster delivery,
+    the Normal Plan has been updated to ₹600.
+  </div>
 
-  return (
-    <div style={bg}>
-      <div style={overlay}>
+  {/* NORMAL */}
+  <div
+    onClick={() =>
+      setForm({ ...form, plan: "Normal - ₹600" })
+    }
+    style={{
+      padding: "14px",
+      borderRadius: "14px",
+      marginBottom: "12px",
+      cursor: "pointer",
+      transition: "0.3s",
 
-        <div style={card}>
+      border: form.plan.includes("Normal")
+        ? "2px solid #00ffd5"
+        : "1px solid rgba(255,255,255,0.25)",
 
-          <h1 style={{
-            fontSize: 42,
-            marginBottom: 10,
-            color: "#fff"
-          }}>
-            🔥 Premium Access
-          </h1>
+      background: form.plan.includes("Normal")
+        ? "rgba(0,255,200,0.12)"
+        : "rgba(255,255,255,0.05)",
 
-          <p style={{
-            color: "#ddd",
-            marginBottom: 20
-          }}>
-            Get instant access after payment
-          </p>
+      transform: form.plan.includes("Normal")
+        ? "scale(1.03)"
+        : "scale(1)",
 
-          {/* DURATION */}
-          <div style={durationBox}>
-            ⏳ <b>2 Months Access</b>
-            <br />
-            🔁 Renewal required after expiry
-          </div>
+      boxShadow: form.plan.includes("Normal")
+        ? "0 0 20px rgba(0,255,200,0.6)"
+        : "none",
 
-          <form onSubmit={submit}>
+      color: "#fff"
+    }}
+  >
+    <b>Normal Users – ₹600</b>
 
-            <input
-              placeholder="Enter your name"
-              required
-              style={inputStyle}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  name: e.target.value
-                })
-              }
-            />
+    <ul style={{
+      fontSize: 12,
+      marginTop: 8,
+      textAlign: "left",
+      lineHeight: 1.8
+    }}>
+      <li>✔ Add to subscription channel</li>
+      <li>✔ First access to content</li>
+      <li>✔ All media access allowed</li>
+    </ul>
+  </div>
 
-            <input
-              placeholder="Enter your age"
-              required
-              style={inputStyle}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  age: e.target.value
-                })
-              }
-            />
+  {/* SUPER */}
+  <div
+    onClick={() =>
+      setForm({ ...form, plan: "Super - ₹1000" })
+    }
+    style={{
+      padding: "18px",
+      borderRadius: "16px",
+      cursor: "pointer",
+      transition: "0.3s",
 
-            {/* 🔥 PLAN SECTION */}
-            <div style={{ marginBottom: 25 }}>
+      border: form.plan.includes("Super")
+        ? "2px solid gold"
+        : "1px solid rgba(255,255,255,0.25)",
 
-              <p style={{
-                marginBottom: 12,
-                color: "#ccc",
-                fontSize: 14
-              }}>
-                Premium Membership:
-              </p>
+      background: form.plan.includes("Super")
+        ? "linear-gradient(135deg,#ff416c,#ff4b2b)"
+        : "rgba(255,255,255,0.05)",
 
-              {/* NOTICE */}
-              <div style={{
-                background: "rgba(255,140,0,0.12)",
-                border: "1px solid rgba(255,140,0,0.4)",
-                padding: "12px",
-                borderRadius: "12px",
-                marginBottom: "15px",
-                color: "#ffd27f",
-                fontSize: 12,
-                textAlign: "left"
-              }}>
-                ⚠️ Due to increasing AI generation & rendering costs,
-                the ₹500 Normal Plan has been removed.
+      transform: form.plan.includes("Super")
+        ? "scale(1.05)"
+        : "scale(1)",
 
-                <br /><br />
+      boxShadow: form.plan.includes("Super")
+        ? "0 0 30px rgba(255,75,43,0.9)"
+        : "none",
 
-                To maintain premium quality and faster delivery,
-                only Super Membership is available.
-              </div>
+      color: "#fff",
+      position: "relative"
+    }}
+  >
 
-              {/* SUPER PLAN */}
-              <div
-                onClick={() =>
-                  setForm({
-                    ...form,
-                    plan: "Super - ₹1000"
-                  })
-                }
-                style={{
-                  padding: "20px",
-                  borderRadius: "18px",
-                  border: "2px solid gold",
-                  background:
-                    "linear-gradient(135deg,#ff416c,#ff4b2b)",
-                  boxShadow:
-                    "0 0 35px rgba(255,75,43,0.9)",
-                  color: "#fff",
-                  cursor: "pointer"
-                }}
-              >
-
-                <b style={{ fontSize: 24 }}>
-                  🔥 Super Users – ₹1000
-                </b>
-
-                <ul style={{
-                  textAlign: "left",
-                  marginTop: 15,
-                  lineHeight: 1.8,
-                  fontSize: 14
-                }}>
-                  <li>✔ Premium subscription access</li>
-                  <li>✔ First access to latest AI content</li>
-                  <li>✔ All premium media access</li>
-                  <li>⭐ Personal AI edits</li>
-                  <li>⭐ Story-based custom edits</li>
-                  <li>⭐ Downloadable premium content</li>
-                  <li>⭐ Premium dashboard access</li>
-                </ul>
-
-                <p style={{
-                  marginTop: 12,
-                  fontSize: 12
-                }}>
-                  ⚡ Most users choose this plan
-                </p>
-
-              </div>
-
-            </div>
-
-            <button type="submit" style={btnStyle}>
-              Continue →
-            </button>
-
-          </form>
-
-          <p style={{
-            fontSize: 11,
-            color: "#ccc",
-            marginTop: 15
-          }}>
-            🔒 Secure payment • Instant access
-          </p>
-
-        </div>
-
-      </div>
+    {/* BADGE */}
+    <div style={{
+      position: "absolute",
+      top: "-10px",
+      right: "10px",
+      background: "gold",
+      color: "#000",
+      padding: "4px 10px",
+      borderRadius: "20px",
+      fontSize: "10px",
+      fontWeight: "bold"
+    }}>
+      MOST POPULAR
     </div>
-  );
-}
 
-/* STYLES */
+    <b style={{ fontSize: 16 }}>
+      🔥 Super Users – ₹1000
+    </b>
 
-const bg = {
-  minHeight: "100vh",
-  backgroundImage:
-    "url('https://i.ibb.co/B51tRxHZ/image-49.jpg')",
-  backgroundSize: "cover",
-  backgroundPosition: "center"
-};
+    <ul style={{
+      fontSize: 13,
+      marginTop: 8,
+      textAlign: "left",
+      lineHeight: 1.8
+    }}>
+      <li>✔ Add to subscription channel</li>
+      <li>✔ First access to content</li>
+      <li>✔ All media access allowed</li>
+      <li>⭐ Story-based edits</li>
+      <li>⭐ Downloadable content</li>
+      <li>⭐ Premium dashboard access</li>
+    </ul>
 
-const overlay = {
-  width: "100%",
-  minHeight: "100vh",
-  background: "rgba(0,0,0,0.75)",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: 20
-};
+    <p style={{
+      fontSize: 11,
+      marginTop: 8,
+      color: "#ffe"
+    }}>
+      ⚡ Best value • Most users choose this
+    </p>
 
-const card = {
-  width: "100%",
-  maxWidth: 420,
-  background: "rgba(255,255,255,0.08)",
-  backdropFilter: "blur(12px)",
-  borderRadius: 20,
-  padding: 25,
-  textAlign: "center",
-  boxShadow: "0 10px 40px rgba(0,0,0,0.5)"
-};
+  </div>
 
-const inputStyle = {
-  width: "100%",
-  padding: "14px",
-  marginBottom: "15px",
-  borderRadius: "10px",
-  border: "1px solid rgba(255,255,255,0.3)",
-  background: "rgba(255,255,255,0.1)",
-  color: "#fff",
-  fontSize: 14,
-  outline: "none"
-};
-
-const btnStyle = {
-  width: "100%",
-  padding: "14px",
-  borderRadius: "12px",
-  border: "none",
-  background:
-    "linear-gradient(45deg,#ff416c,#ff4b2b)",
-  color: "#fff",
-  fontSize: 16,
-  fontWeight: "bold",
-  cursor: "pointer"
-};
-
-const durationBox = {
-  background: "rgba(255,255,255,0.08)",
-  padding: 12,
-  borderRadius: 12,
-  marginBottom: 20,
-  color: "#fff",
-  fontSize: 14
-};
+</div>
