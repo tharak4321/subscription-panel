@@ -133,7 +133,7 @@
       <li>✔ Add to subscription channel</li>
       <li>✔ First access to content</li>
       <li>✔ All media access allowed</li>
-      <li>⭐ Personal edits</li>
+      
       <li>⭐ Story-based edits</li>
       <li>⭐ Downloadable content</li>
       <li>⭐ Premium dashboard access</li>
