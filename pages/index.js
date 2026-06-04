@@ -152,7 +152,7 @@ export default function Home() {
 const bg = {
   minHeight: "100vh",
   backgroundImage:
-    "url('https://i.ibb.co/B51tRxHZ/image-49.jpg')",
+    "url('https://i.ibb.co/Wv9ZMDn2/Google-Pay-QR-1.png')",
   backgroundSize: "cover",
   backgroundPosition: "center"
 };
