@@ -23,7 +23,7 @@ export default function Pay() {
         )}
 
         <img
-          src="https://i.ibb.co/Wv9ZMDn2/Google-Pay-QR-1.png"
+          src="https://i.ibb.co/PG1wLPMj/UPI-QR-Manoj-Kumar-H-1.jpg"
           width="220"
           style={{borderRadius:10, margin:10}}
         />
