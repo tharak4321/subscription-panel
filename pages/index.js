@@ -1,242 +1,227 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { APP_NAME, PLANS } from "../lib/brand";
+
+const AGE_KEY = "ap9_age_ok";
 
 export default function Home() {
   const router = useRouter();
+  const [ageOk, setAgeOk] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [name, setName] = useState("");
+  const [plan, setPlan] = useState("super");
 
-  const [form, setForm] = useState({
-    name: "",
-    age: "",
-    plan: "Super - ₹1000"
-  });
+  useEffect(() => {
+    setAgeOk(localStorage.getItem(AGE_KEY) === "1");
+    setReady(true);
+  }, []);
 
-  const submit = (e) => {
+  function confirmAge() {
+    localStorage.setItem(AGE_KEY, "1");
+    setAgeOk(true);
+  }
+
+  function continuePay(e) {
     e.preventDefault();
-    localStorage.setItem("user", JSON.stringify(form));
+    const selected = PLANS.find((p) => p.key === plan) || PLANS[1];
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        name: name.trim(),
+        plan: `${selected.label} - ₹${selected.price}`,
+        planKey: selected.key,
+        price: selected.price,
+      })
+    );
     router.push("/pay");
-  };
+  }
+
+  if (!ready) {
+    return <main style={page}>Loading…</main>;
+  }
 
   return (
-    <div style={bg}>
-      <div style={overlay}>
-        <div style={card}>
-
-          <h2 style={{ marginBottom: 10 }}>
-            🔥 Premium Access
-          </h2>
-
-          <p style={{
-            fontSize: 13,
-            color: "#ccc",
-            marginBottom: 12
-          }}>
-            Get instant access after payment
-          </p>
-
-          <div style={infoBox}>
-            ⏳ <b>2 Months Access</b>
-            <br />
-            🔄 Renewal required after expiry
-          </div>
-
-          <form onSubmit={submit}>
-
-            <input
-              placeholder="Enter your name"
-              required
-              style={inputStyle}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  name: e.target.value
-                })
-              }
-            />
-
-            <input
-              placeholder="Enter your age"
-              required
-              style={inputStyle}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  age: e.target.value
-                })
-              }
-            />
-
-            <div style={{ marginBottom: 20 }}>
-
-              <p style={{
-                color: "#ccc",
-                marginBottom: 12
-              }}>
-                Choose your plan:
-              </p>
-
-              <div style={noticeBox}>
-                ⚠️ AI generation & rendering costs increased.
-                <br /><br />
-                Normal plan updated to ₹600.
-              </div>
-
-              {/* NORMAL */}
-              <div
-                onClick={() =>
-                  setForm({
-                    ...form,
-                    plan: "Normal - ₹600"
-                  })
-                }
-                style={{
-                  ...planCard,
-                  border:
-                    form.plan === "Normal - ₹600"
-                      ? "2px solid #00ffd5"
-                      : "1px solid rgba(255,255,255,0.25)"
-                }}
-              >
-                <b>Normal Users – ₹600</b>
-
-                <ul style={listStyle}>
-                  <li>✔ Add to subscription channel</li>
-                  <li>✔ First access to content</li>
-                  <li>✔ All media access allowed</li>
-                </ul>
-              </div>
-
-              {/* SUPER */}
-              <div
-                onClick={() =>
-                  setForm({
-                    ...form,
-                    plan: "Super - ₹1000"
-                  })
-                }
-                style={{
-                  ...superCard,
-                  border:
-                    form.plan === "Super - ₹1000"
-                      ? "2px solid gold"
-                      : "1px solid rgba(255,255,255,0.25)"
-                }}
-              >
-                <b>🔥 Super Users – ₹1000</b>
-
-                <ul style={listStyle}>
-                  <li>✔ Premium subscription access</li>
-                  <li>✔ First access to content</li>
-                  <li>✔ All media access allowed</li>
-                 
-                  <li>⭐ Story-based edits</li>
-                  <li>⭐ Downloadable content</li>
-                </ul>
-              </div>
-
-            </div>
-
-            <button type="submit" style={btnStyle}>
-              Continue →
+    <main style={page}>
+      {!ageOk && (
+        <div style={gate}>
+          <div style={gateCard}>
+            <div style={badge}>18+ ONLY</div>
+            <h1 style={{ margin: "12px 0 8px", fontSize: 28 }}>{APP_NAME}</h1>
+            <p style={{ color: "#c9b8b0", fontSize: 14, lineHeight: 1.5 }}>
+              This membership is for adult AI videos. You must be 18 or older to continue.
+            </p>
+            <button type="button" style={primaryBtn} onClick={confirmAge}>
+              I am 18 or older
             </button>
-
-          </form>
-
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+
+      <header style={header}>
+        <div>
+          <div style={{ fontSize: 12, letterSpacing: 2, color: "#c42b4a" }}>18+ PASS</div>
+          <strong>{APP_NAME}</strong>
+        </div>
+        <Link href="/admin" style={{ fontSize: 13, color: "#c9b8b0" }}>
+          Sign in
+        </Link>
+      </header>
+
+      <section style={hero}>
+        <h1 style={{ fontSize: 32, margin: "0 0 10px", lineHeight: 1.15 }}>
+          Adult AI video membership
+        </h1>
+        <p style={{ color: "#c9b8b0", margin: 0, fontSize: 15 }}>
+          Choose a plan, pay by UPI, upload proof, then open Telegram with your unique ID.
+        </p>
+      </section>
+
+      <form onSubmit={continuePay} style={{ maxWidth: 440, margin: "0 auto", padding: 16 }}>
+        <label style={label}>
+          Your name
+          <input
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Name"
+            style={input}
+          />
+        </label>
+
+        <p style={{ ...label, marginTop: 18 }}>Choose plan · 2 months</p>
+
+        {PLANS.map((p) => (
+          <button
+            key={p.key}
+            type="button"
+            onClick={() => setPlan(p.key)}
+            style={{
+              ...planCard,
+              border:
+                plan === p.key
+                  ? p.key === "super"
+                    ? "2px solid #e8b86d"
+                    : "2px solid #c42b4a"
+                  : "1px solid rgba(255,255,255,0.12)",
+              background:
+                p.key === "super"
+                  ? "linear-gradient(145deg,#4a1524,#1a0c10)"
+                  : "rgba(255,255,255,0.04)",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+              <strong>{p.label}</strong>
+              <strong>₹{p.price}</strong>
+            </div>
+            <ul style={list}>
+              {p.features.map((f) => (
+                <li key={f}>{f}</li>
+              ))}
+            </ul>
+          </button>
+        ))}
+
+        <button type="submit" style={{ ...primaryBtn, marginTop: 8 }}>
+          Continue to payment
+        </button>
+      </form>
+    </main>
   );
 }
 
-/* styles */
-
-const bg = {
+const page = {
   minHeight: "100vh",
-  backgroundImage:
-    "url('https://i.ibb.co/Wv9ZMDn2/Google-Pay-QR-1.png')",
-  backgroundSize: "cover",
-  backgroundPosition: "center"
+  background: "radial-gradient(1200px 600px at 50% -10%, #3a1018 0%, #0b0809 55%)",
 };
 
-const overlay = {
-  width: "100%",
-  minHeight: "100vh",
-  background: "rgba(0,0,0,0.75)",
+const header = {
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "space-between",
   alignItems: "center",
-  padding: 20
+  padding: "16px 20px",
+  borderBottom: "1px solid rgba(255,255,255,0.06)",
 };
 
-const card = {
-  background: "rgba(255,255,255,0.08)",
-  backdropFilter: "blur(12px)",
-  padding: 30,
-  borderRadius: 15,
-  width: "90%",
-  maxWidth: 380,
-  color: "#fff",
-  textAlign: "center"
+const hero = {
+  maxWidth: 440,
+  margin: "0 auto",
+  padding: "28px 16px 8px",
 };
 
-const infoBox = {
-  background: "rgba(255,255,255,0.1)",
-  padding: 10,
-  borderRadius: 8,
-  marginBottom: 20,
-  fontSize: 13
+const label = {
+  display: "block",
+  fontSize: 13,
+  color: "#c9b8b0",
+  marginBottom: 8,
 };
 
-const noticeBox = {
-  background: "rgba(255,140,0,0.12)",
-  padding: 12,
-  borderRadius: 10,
-  marginBottom: 12,
-  fontSize: 12,
-  color: "#ffd27f",
-  textAlign: "left"
-};
-
-const inputStyle = {
+const input = {
   width: "100%",
-  padding: 12,
-  marginBottom: 12,
-  borderRadius: 8,
-  border: "1px solid rgba(255,255,255,0.3)",
-  background: "rgba(255,255,255,0.1)",
-  color: "#fff"
+  marginTop: 8,
+  padding: "14px 14px",
+  borderRadius: 12,
+  border: "1px solid rgba(255,255,255,0.12)",
+  background: "rgba(0,0,0,0.35)",
+  color: "#fff",
 };
 
 const planCard = {
-  padding: 15,
-  borderRadius: 14,
-  marginBottom: 12,
-  background: "rgba(255,255,255,0.05)",
-  cursor: "pointer"
-};
-
-const superCard = {
-  padding: 18,
-  borderRadius: 16,
-  background:
-    "linear-gradient(135deg,#ff416c,#ff4b2b)",
-  cursor: "pointer"
-};
-
-const listStyle = {
+  width: "100%",
   textAlign: "left",
-  fontSize: 13,
-  lineHeight: 1.8,
-  marginTop: 8
+  color: "#fff",
+  padding: 16,
+  borderRadius: 16,
+  marginBottom: 12,
+  cursor: "pointer",
 };
 
-const btnStyle = {
+const list = {
+  margin: "10px 0 0",
+  paddingLeft: 18,
+  fontSize: 13,
+  color: "#d8c8c0",
+  lineHeight: 1.7,
+};
+
+const primaryBtn = {
   width: "100%",
   padding: 14,
-  background:
-    "linear-gradient(45deg,#ff416c,#ff4b2b)",
-  color: "#fff",
   border: "none",
-  borderRadius: 10,
-  fontWeight: "bold",
-  cursor: "pointer"
+  borderRadius: 12,
+  background: "linear-gradient(90deg,#c42b4a,#8b1e35)",
+  color: "#fff",
+  fontWeight: 700,
+  cursor: "pointer",
+};
+
+const gate = {
+  position: "fixed",
+  inset: 0,
+  zIndex: 50,
+  background: "rgba(0,0,0,0.92)",
+  display: "grid",
+  placeItems: "center",
+  padding: 20,
+};
+
+const gateCard = {
+  maxWidth: 360,
+  width: "100%",
+  textAlign: "center",
+  background: "#140c0e",
+  border: "1px solid rgba(196,43,74,0.35)",
+  borderRadius: 20,
+  padding: 28,
+};
+
+const badge = {
+  display: "inline-block",
+  padding: "6px 12px",
+  borderRadius: 999,
+  background: "rgba(196,43,74,0.2)",
+  color: "#ff6b8a",
+  fontSize: 12,
+  fontWeight: 700,
+  letterSpacing: 1,
 };
